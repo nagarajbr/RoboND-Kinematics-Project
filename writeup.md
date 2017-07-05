@@ -26,10 +26,10 @@ I derived exact *a* and *d* values using the `kr210.urdf.xacro` file.
 
 In my code, Θ is replaced by 'q'. The DH matrix is shown below as python script.
 
-`    s = {alpha0:     0, a0:      0, d1:  0.75, 
-         alpha1: -pi/2, a1:   0.35, d2:     0, q2: q2-pi/2, 
-         alpha2:     0, a2:   1.25, d3:     0, 
-         alpha3: -pi/2, a3: -0.054, d4:  1.50, 
-         alpha4:  pi/2, a4:      0, d5:     0, 
-         alpha5: -pi/2, a5:      0, d6:     0, 
-         alpha6:     0, a6:      0, d7: 0.303, q7: 0}`
+`s = {alpha0:      0, a0:       0, d1:  0.75,
+     alpha1:  -np.pi/2, a1:    0.35, d2:     0, q2: q2-np.pi/2,
+     alpha2:      0, a2:    1.25, d3:     0,
+     alpha3:  -np.pi/2, a3:  -0.054, d4:  1.50,
+     alpha4:   np.pi/2, a4:       0, d5:     0,
+     alpha5:  -np.pi/2, a5:       0, d6:     0,
+     alpha6:      0, a6:       0, d7: 0.303, q7: 0}`
