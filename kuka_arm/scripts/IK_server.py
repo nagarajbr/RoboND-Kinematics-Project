@@ -49,10 +49,6 @@ def handle_calculate_IK(req):
 	     alpha4:   pi/2.,  a4:       0, d5:       0,
 	     alpha5:  -pi/2.,  a5:       0, d6:       0,
 	     alpha6:       0,  a6:       0, d7:   0.303, q7: 0}
-            
-            # Define Modified DH Transformation matrix
-
-
 
             # Create individual transformation matrices
 
