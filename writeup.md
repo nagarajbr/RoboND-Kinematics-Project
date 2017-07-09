@@ -58,7 +58,7 @@ We will now write a function using python that can be reused to generate the ind
 
 We do the prerequisite symbol definition, and translate the DH table shown earlier to be used in our program.
 
-
+```
 # Define linkoffset symbols for the DH table parameters 
 d1, d2, d3, d4, d5, d6, d7 = symbols('d1:8')
 # Define linklength symbols for the DH table parameters 
@@ -77,6 +77,7 @@ dh = {alpha0:     0, a0:      0, d1:  0.75,
     alpha5: -pi/2, a5:      0, d6:     0,
     alpha6:     0, a6:      0, d7: 0.303,  q7: 0 }
 ```
+The function snippet is below:
 ```
 #Pass arguments corresponding to each row in the DH table
 
@@ -90,6 +91,7 @@ def generateMatrix(alpha, a, q, d):
 ```
 
 A code snippet for invoking the function above is shown below. This call is repeated for each individual transform:
+
 ```
 #Invoke Method as below for each T1_2, T2_3, T3_4, T4_5, T5_6, T6_G
 
@@ -104,7 +106,7 @@ Matrix([
 [      0,        0, 0,    1]])
 
 ```
-We finally comput the homogeneous transformation from the base link to the gripper by:
+We finally compute the homogeneous transformation from the base link to the gripper by:
 ```
 T0_G = T0_1 * T1_2 * T2_3 * T3_4 * T4_5 * T5_6 * T6_G
 ```
