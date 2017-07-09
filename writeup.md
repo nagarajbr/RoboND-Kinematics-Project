@@ -139,5 +139,12 @@ rCorrection = simplify (Rz*Ry)
 totalTransform = simplify (T0_G * rCorrection)
 
 ```
- 
- 
+
+#### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles
+
+We  begin with solving the Inverse position problem. Since the joints 4,5, 6 of the kuka arm are revolute, and the joint axes intersect at joint5, it becomes the common intersection point, and thereby the wrist center.
+To determine the Wrist Center position, we will need:
+*the end-effector positions and rotation transformation matrix
+*the d6 values (distance of the end-effector from the wrist center) from the DHS table
+*the end-effector length
+
