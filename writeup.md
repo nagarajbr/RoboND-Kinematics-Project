@@ -93,7 +93,7 @@ A code snippet for invoking the function above is shown below. This call is repe
 ```
 #Invoke Method as below for each T1_2, T2_3, T3_4, T4_5, T5_6, T6_G
 
-T0_1 = generateMatrix (alpha0,a0, q1, d1).subs(s)
+T0_1 = generateMatrix (alpha0,a0, q1, d1).subs(dh)
 
 #Output from calling T0_1
 
@@ -104,3 +104,38 @@ Matrix([
 [      0,        0, 0,    1]])
 
 ```
+We finally comput the homogeneous transformation from the base link to the gripper by:
+```
+T0_G = T0_1 * T1_2 * T2_3 * T3_4 * T4_5 * T5_6 * T6_G
+```
+We now move on to account for the difference in the orientation of the gripper link frame to the T0_G that we arrived above. We arrive at this by performing a 2 step intrinsic rotations on the gripper frame (z by 180 degrees and y by -90 degrees), and thereby aligning with base link frame. The schematic representation is shown below:
+
+![alt_text][image5]
+
+The code snippet for the correction process described above is shown below:
+```
+# Rotation adjustment about Z
+
+def rotateZ(q):
+    Rz = Matrix([[  cos(q), -sin(q),       0 ],
+                  [  sin(q),  cos(q),       0 ],
+                  [       0,       0,       1 ]])
+    return Rz
+# Rotation adjustment about Y
+def rotateY(q):
+    Ry = Matrix([[  cos(q),       0,  sin(q) ],
+                  [       0,       1,       0 ],
+                  [ -sin(q),       0,  cos(q) ]])
+    return Ry
+
+# Calculate the rotational correction from z and y at the gripper link frame
+
+rCorrection = simplify (Rz*Ry)
+
+# Final FW total homgeneou transformation and computation
+
+totalTransform = simplify (T0_G * rCorrection)
+
+```
+ 
+ 
