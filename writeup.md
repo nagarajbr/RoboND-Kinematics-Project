@@ -3,7 +3,7 @@
 
 [image1]: ./misc_images/misc4.png
 [image2]: ./misc_images/eq1.png
-[image3]: ./misc_images/eq1.png
+[image3]: ./misc_images/eq2.png
 [image4]: ./misc_images/image1.png
 [image5]: ./misc_images/rot.png
 
@@ -48,10 +48,10 @@ Each link is composed of 4 individual trasnforms, 2 rotations, 2 translations an
 
 The individual transformation approach:
 
-![alt_text][eq2]
+![alt_text][image3]
 
 In matrix form the above equation can be represented as:
 
-![alt_text][eq1]
+![alt_text][image2]
 
 
