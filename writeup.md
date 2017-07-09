@@ -151,12 +151,18 @@ To determine the Wrist Center position, we will need:
 
 *the d values (distance of the end-effector from the wrist center) from the DHS table*
 
-We will follow the conventions from before, with the "q" representing the thetas. We will begin with calculating the first of the three required thetas. As presented in the IK lessions and example (Lesson2) we will do a schematic representation as shown below, where the wrist center is project onto the xo and yo plane. This now makes the calculation of theta1 straightforward. We will be using the formula as below:
+We will begin with calculating the first of the three required thetas. As presented in the IK lessions and example (Lesson2) we have a schematic representation as shown below, where the wrist center is projected onto the xo and yo plane. This now makes the calculation of theta1 straightforward. We will use the formula below:
 
 ![alt_text][image6]
 
 ```
 theta1 = atan2(rwc_0[1], rwc_0[0])
-
-
+```
+We will now set q1 to 0, and calculate the O2 position in relation to the base.
+```
+pO2_0 = Matrix([[dh[a1]], [0], [dh[d1]]])
+# Rotate pO2_0 w.r.t. Z by theta1
+pO2_0 = rot_z(theta1)* pO2_0
+```
+The next few steps involve primary solving for the joint angles within the triangle formed by the three points - O2, O3 and O5 (with O4 on the O3 - O5 line)
 
