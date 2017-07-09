@@ -6,6 +6,7 @@
 [image3]: ./misc_images/eq2.png
 [image4]: ./misc_images/image1.png
 [image5]: ./misc_images/rot.png
+[image6]: ./misc_images/codecogseqn.gif
 
 ### Writeup / README
 
@@ -143,8 +144,19 @@ totalTransform = simplify (T0_G * rCorrection)
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles
 
 We  begin with solving the Inverse position problem. Since the joints 4,5, 6 of the kuka arm are revolute, and the joint axes intersect at joint5, it becomes the common intersection point, and thereby the wrist center.
+
 To determine the Wrist Center position, we will need:
-*the end-effector positions and rotation transformation matrix
-*the d6 values (distance of the end-effector from the wrist center) from the DHS table
-*the end-effector length
+
+*the end-effector positions and rotation transformation matrix*
+
+*the d values (distance of the end-effector from the wrist center) from the DHS table*
+
+We will follow the conventions from before, with the "q" representing the thetas. We will begin with calculating the first of the three required thetas. As presented in the IK lessions and example (Lesson2) we will do a schematic representation as shown below, where the wrist center is project onto the xo and yo plane. This now makes the calculation of theta1 straightforward. We will be using the formula as below:
+
+![alt_text][image6]
+
+```
+theta1 = atan2(rwc_0[1], rwc_0[0])
+
+
 
