@@ -59,7 +59,7 @@ We will now write a function using python that can be reused to generate the ind
 
 We do the prerequisite symbol definition, and translate the DH table shown earlier to be used in our program.
 
-```
+``` python
 # Define linkoffset symbols for the DH table parameters 
 d1, d2, d3, d4, d5, d6, d7 = symbols('d1:8')
 # Define linklength symbols for the DH table parameters 
@@ -67,7 +67,6 @@ a0, a1, a2, a3, a4, a5, a6 = symbols('a0:7')
 # Define twist angles for links as symbols for the DH table parameters 
 alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6 = symbols('alpha0:7')
 # Define symbols for Joint angles. The q's are basically the theta angles that we will refer to in subsequent discussions
-
 q1, q2, q3, q4, q5, q6, q7 = symbols('q1:8')
 
 dh = {alpha0:     0, a0:      0, d1:  0.75,
@@ -79,7 +78,7 @@ dh = {alpha0:     0, a0:      0, d1:  0.75,
     alpha6:     0, a6:      0, d7: 0.303,  q7: 0 }
 ```
 The function snippet is below:
-```
+``` python
 #Pass arguments corresponding to each row in the DH table
 
 def generateMatrix(alpha, a, q, d):
@@ -93,7 +92,7 @@ def generateMatrix(alpha, a, q, d):
 
 A code snippet for invoking the function above is shown below. This call is repeated for each individual transform:
 
-```
+``` python
 #Invoke Method as below for each T1_2, T2_3, T3_4, T4_5, T5_6, T6_G
 
 T0_1 = generateMatrix (alpha0,a0, q1, d1).subs(dh)
@@ -108,7 +107,7 @@ Matrix([
 
 ```
 We finally compute the homogeneous transformation from the base link to the gripper by:
-```
+``` python
 T0_G = T0_1 * T1_2 * T2_3 * T3_4 * T4_5 * T5_6 * T6_G
 ```
 We now move on to account for the difference in the orientation of the gripper link frame to the T0_G that we arrived above. We arrive at this by performing a 2 step intrinsic rotations on the gripper frame (z by 180 degrees and y by -90 degrees), and thereby aligning with base link frame. The schematic representation is shown below:
@@ -116,7 +115,7 @@ We now move on to account for the difference in the orientation of the gripper l
 ![alt_text][image5]
 
 The code snippet for the correction process described above is shown below:
-```
+``` python
 # Rotation adjustment about Z
 
 def rotateZ(q):
@@ -145,8 +144,8 @@ totalTransform = simplify (T0_G * rCorrection)
 
 We  begin with solving the Inverse position problem. Since the joints 4,5, 6 of the kuka arm are revolute, and the joint axes intersect at joint5, it becomes the common intersection point, and thereby the wrist center. This is a 5 step process, with Step 1 including the symbol definition and DH table creation. We will begin with Step 2 in this section.
 
-##### Step 2 is to find the location of the WC relative to the base frame
-```
+##### Step 2: to find the location of the WC relative to the base frame
+``` python
 #.303 is the d value for the gripper row, which is the length between the gripper and the wrist center (It is 0 between the #wrist center and 6)
 DG = dh[d7]  
 
@@ -168,17 +167,17 @@ We will begin with calculating the first of the three required thetas. As presen
 
 ![alt_text][image6]
 
-```
+``` python
 theta1 = atan2(WC_0[1], WC_0[0])
 ```
 We will now set q1 to 0, and calculate the O2 position in relation to the base. To compute theta2, we will look at the angle between the z2 and x2 axis
-```
+``` python
 PO2 = Matrix([[dh[a1]], [0], [dh[d1]]])
 # Rotate PO2 w.r.t. Z by theta1
 PO2 = rotateZ(theta1)* PO2
 ```
 The next few steps involve primarily solving for the joint angles within the triangle formed by the three points / joints - O2, O3 and O5 (with O4 on the O3 - O5 line)
-```
+``` python
 # As shown in the base diagram above, dh[a2] is the length between O2 and O3
 O2_O3 = dh[a2]
 
@@ -206,3 +205,6 @@ X2_Primary = T0_2.subs({q1:theta1, q2:0}).dot([[1], [0], [0], [0]])
 theta2 = np.arccos(float(np.dot(X2_Primary, theta2Direction[0:4])))
 theta3 = ((pi/2 + angleO3_offset) - angle_O3).evalf()
 ```
+##### Step 4: Once the first three joint variables are known, calculate R0_3 via application of homogeneous transforms up to the WC.
+
+##### Step 5: find a set of Euler angles corresponding to the rotation matrix
