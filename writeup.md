@@ -7,6 +7,8 @@
 [image4]: ./misc_images/image1.png
 [image5]: ./misc_images/rot.png
 [image6]: ./misc_images/codecogseqn.gif
+[image7]: ./misc_images/misc5.png
+[image8]: ./misc_images/misc6.png
 
 ### Writeup / README
 
@@ -43,7 +45,7 @@ Gripper | 0 | 0 | 0.303 | 0
 
 The adjacemt z axes (i-1 and i)can be seen to either be colinear, perpendicular or parallel. This helps derive the values for the DH table above, and will also help perform kinematic analysis in the next steps.
 
-#### 2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.####
+#### 2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.
 
 Each link is composed of 4 individual trasnforms, 2 rotations, 2 translations and performed in a order represented in the equation below. We will use this to go step by step, starting from the base link to the end effector, with each step representing a row in the DH table that we derived earlier.
 
@@ -163,6 +165,8 @@ To determine the Wrist Center position, we will need:
 
 *the d values (distance of the end-effector from the wrist center) from the DHS table*
 
+![alt text][image7]
+
 We will begin with calculating the first of the three required thetas. As presented in the IK lessions and example (Lesson2) we have a schematic representation as shown below, where the wrist center is projected onto the xo and yo plane. This now makes the calculation of theta1 straightforward. We will use the formula below:
 
 ![alt_text][image6]
@@ -171,6 +175,9 @@ We will begin with calculating the first of the three required thetas. As presen
 theta1 = atan2(WC_0[1], WC_0[0])
 ```
 We will now set q1 to 0, and calculate the O2 position in relation to the base. To compute theta2, we will look at the angle between the z2 and x2 axis
+
+![alt text][image8]
+
 ``` python
 PO2 = Matrix([[dh[a1]], [0], [dh[d1]]])
 # Rotate PO2 w.r.t. Z by theta1
