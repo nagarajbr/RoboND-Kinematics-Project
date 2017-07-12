@@ -214,4 +214,11 @@ theta3 = ((pi/2 + angleO3_offset) - angle_O3).evalf()
 ```
 ##### Step 4: Once the first three joint variables are known, calculate R0_3 via application of homogeneous transforms up to the WC.
 
+`R0_3` is calculated by multiplying the transformation matrices for `T0_1` through `T2_3`. `R3_6` is calculated in a similar fashion.
+
+```python
+R0_3 = T0_3[0:3,0:3]
+R3_6 = (T3_4*T4_5*T5_6)[:3,:3]
+```
+
 ##### Step 5: find a set of Euler angles corresponding to the rotation matrix
