@@ -217,8 +217,10 @@ theta3 = ((pi/2 + angleO3_offset) - angle_O3).evalf()
 `R0_3` is calculated by multiplying the transformation matrices for `T0_1` through `T2_3`. `R3_6` is calculated in a similar fashion.
 
 ```python
+T0_3 = simplify(T0_1 * T1_2 * T2_3)
 R0_3 = T0_3[0:3,0:3]
-R3_6 = (T3_4*T4_5*T5_6)[:3,:3]
+R3_6 = R0_3.transpose() *  Matrix(R0_g) * R_corr.transpose()
+R3_6 = R3_6.subs({q1: theta1, q2:theta2, q3: theta3})
 ```
 
 ##### Step 5: find a set of Euler angles corresponding to the rotation matrix
