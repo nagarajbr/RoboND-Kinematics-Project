@@ -123,15 +123,15 @@ def handle_calculate_IK(req):
             pg = Matrix([[px], [py], [pz]])
      
             # Calculate joint angles using Geometric IK method
-            
-                         
+                             
             #### Step 2:
-                         
+            
             dG = dh[d7]
             R0_G = tf.transformations.quaternion_matrix([req.poses[x].orientation.x, req.poses[x].orientation.y,
                     req.poses[x].orientation.z, req.poses[x].orientation.w])
-            O5_0 = PG_0 - Matrix(dG*R0_G)
-                         
+            O5_0 = pg - Matrix(dG * R0_G)
+            WC_0  = pg - Matrix(d_g * np.dot(R0_g,z_g))
+            
             #### Step 3:
             
             theta1 = atan2(WC_0[1], WC_0[0])
@@ -140,14 +140,13 @@ def handle_calculate_IK(req):
             PO2 = rotateZ(theta1)* PO2
             # dh[a2] is the length between the wrist center (O5) and O2
             O2_O3 = dh[a2]
-                             
+                    
             # To calculate the length between the wrist center(O5) and O2
             PO2_O5 = O5_0 - PO2
             O2_O5 = PO2_O5.norm()
-                             
+            
             # Distance between O3 and O5/WC = (d4^2 + a3^2)
-            O3_O5 = np.sqrt(dh[d4]*dh[d4] + dh[a3]*dh[a3])
-                             
+            O3_O5 = np.sqrt(dh[d4]*dh[d4] + dh[a3]*dh[a3])            
             
             # Offset angle between the Y3 axis line(O3, O5), angleO3_offset
             angleO3_offset = atan2(dh[a3], dh[d4])   
@@ -183,7 +182,7 @@ def handle_calculate_IK(req):
             R3_6 = R0_3.transpose() * Matrix(R0_g)* R_corr.transpose()
             
             #### Step 5
-                             
+                           
             theta4 = atan2(R3_6[2,2], -R3_6[0, 2]).evalf() 
             theta6 = atan2(-R3_6[1,1], R3_6[1,0]).evalf() 
             theta5 = atan2(sqrt(R3_6[0, 2]*R3_6[0, 2] + R3_6[2, 2]*R3_6[2, 2]), R3_6[1, 2]).evalf()
