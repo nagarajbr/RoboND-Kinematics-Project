@@ -214,13 +214,27 @@ theta3 = ((pi/2 + angleO3_offset) - angle_O3).evalf()
 ```
 ##### Step 4: Once the first three joint variables are known, calculate R0_3 via application of homogeneous transforms up to the WC.
 
-`R0_3` is calculated by multiplying the transformation matrices for `T0_1` through `T2_3`. `R3_6` is calculated in a similar fashion.
+`R0_3` is calculated by multiplying the transformation matrices for `T0_1` through `T2_3`. We then extract the rotation matrix. We perform the same functions for `R3_6`.
 
 ```python
-T0_3 = simplify(T0_1 * T1_2 * T2_3)
 R0_3 = T0_3[0:3,0:3]
-R3_6 = R0_3.transpose() *  Matrix(R0_g) * R_corr.transpose()
+R3_6 = (T3_4*T4_5*T5_6)[:3,:3]
 R3_6 = R3_6.subs({q1: theta1, q2:theta2, q3: theta3})
+R0_G = R0_3 * R3_6 * R_corr
+R3_6 = R0_3.transpose() * R0_G* R_corr.transpose()
+                             
+R0_3 = T0_3[0:3,0:3]
+R3_6 = R0_3.transpose() * Matrix(R0_g)* R_corr.transpose()
 ```
 
 ##### Step 5: find a set of Euler angles corresponding to the rotation matrix
+
+Finally, we calculate `theta4`, `theta5`, and `theta6`. We do this by using the Law of Cosines.
+
+```python
+theta4 = atan2(R3_6[2,2], -R3_6[0, 2]).evalf() 
+theta6 = atan2(-R3_6[1,1], R3_6[1,0]).evalf() 
+theta5 = atan2(sqrt(R3_6[0, 2]*R3_6[0, 2] + R3_6[2, 2]*R3_6[2, 2]), R3_6[1, 2]).evalf()
+```
+
+### Project Implementation
