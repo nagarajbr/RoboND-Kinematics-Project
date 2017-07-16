@@ -173,7 +173,14 @@ def handle_calculate_IK(req):
                              
             #### Step 4
                              
+            R0_3 = T0_3[0:3,0:3]
             R3_6 = (T3_4*T4_5*T5_6)[:3,:3]
+            R3_6 = R3_6.subs({q1: theta1, q2:theta2, q3: theta3})
+            R0_G = R0_3 * R3_6 * R_corr
+            R3_6 = R0_3.transpose() * R0_G* R_corr.transpose()
+                             
+            R0_3 = T0_3[0:3,0:3]
+            R3_6 = R0_3.transpose() * Matrix(R0_g)* R_corr.transpose()
             
             #### Step 5
                              
