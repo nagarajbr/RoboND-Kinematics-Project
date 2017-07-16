@@ -172,11 +172,8 @@ def handle_calculate_IK(req):
             joint_trajectory_list.append(joint_trajectory_point)
                              
             #### Step 4
-                 
-            T0_3 = simplify(T0_1 * T1_2 * T2_3)
-            R0_3 = T0_3[0:3,0:3]
-            R3_6 = R0_3.transpose() *  Matrix(R0_g) * R_corr.transpose()
-            R3_6 = R3_6.subs({q1: theta1, q2:theta2, q3: theta3})
+                             
+            R3_6 = (T3_4*T4_5*T5_6)[:3,:3]
             
             #### Step 5
                              
